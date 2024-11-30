@@ -6,7 +6,7 @@ $c[+
 
 $c[- Configuration]
  $c[+ General]
-  $var[prefix;^] $c[Only visual, can be empty]
+  $var[prefix;^] $c[Only visual, can be empty (not recomended)]
   $var[root.name;Root] $c[Profile]
   $var[core.notify_update;true] $c[Notify when a new update is avaible? (default = true)]
   $var[core.auto_update;true] $c[Auto update? default = false]
@@ -65,7 +65,6 @@ $c[! Runtime]$c[Functions always in use]
  $endif
 
  
-
 
 $c[! Eval]
 $if[$and[$var[1]==eval;$var[command.eval]==true]==true]
