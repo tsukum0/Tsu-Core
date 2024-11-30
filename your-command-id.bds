@@ -56,7 +56,7 @@ $c[! Runtime]$c[Functions always in use]
    $httpAddHeader[Accept;text/html,application/xhtml+xml,application/xml\;q=0.9,*/*\;q=0.8]
    $httpAddHeader[Priority;u=0, i]
    $httpAddHeader[Content-Type;application/x-www-form-urlencoded]
-   $httpPost[https://botdesignerdiscord.com/app/bot/$var[tsu.bdfd.botID]/command/$var[tsu.bdfd.core_commandid];name=$url[encode;Tsu Core v.$var[mirror_version]]&command=$url[encode;$var[prefix]]&replyMessage=$var[cache.autoupdate1]&language=3]
+   $httpPost[https://botdesignerdiscord.com/app/bot/$var[tsu.bdfd.botID]/command/$var[tsu.bdfd.core_commandid];name=$url[encode;Tsu Core v.$var[mirror_version]]&command=$url[encode;$var[prefix]]&replyMessage=$url[encode;$var[cache.autoupdate1]]&language=3]
    $if[$httpStatus==200]
     $channelSendMessage[$dmChannelID[$botOwnerID];Hello, <@$authorID>, the command `Tsu Core` has been updated to the new version: v.$var[mirror_version]]! You can disable auto update by setting `core.auto_update` to false.]
     $else
