@@ -9,7 +9,7 @@ $c[- Configuration]
   $var[prefix;^] $c[Only visual, can be empty (not recomended)]
   $var[root.name;Root] $c[Profile]
   $var[core.notify_update;true] $c[Notify when a new update is avaible? (default = true)]
-  $var[core.auto_update;true] $c[Auto update? default = false]
+  $var[core.auto_update;false] $c[Auto update? default = false]
   $var[core.appearence;terminal] $c[Not a thing rn]
   $var[core.language;] $c[Not a thing rn]
  $c[! Commands]
@@ -20,7 +20,7 @@ $c[- Notes:
  This command was created to help developing your bot in BDFD, with a lot of commands compacted in one.
 The indentation of this command is propositaly diferent, as it helped me (the developer) to code. (this
 Means that you don't need to copy this indentation as it ins't needed when creating you code.)
-]$var[version;2]
+]$var[version;1]
 
 $c[! Message Lower (Life quality)]
  $var[msg.count;1]
@@ -57,6 +57,12 @@ $c[! Runtime]$c[Functions always in use]
    $httpAddHeader[Priority;u=0, i]
    $httpAddHeader[Content-Type;application/x-www-form-urlencoded]
    $httpPost[https://botdesignerdiscord.com/app/bot/$var[tsu.bdfd.botID]/command/$var[tsu.bdfd.core_commandid];name=$url[encode;Tsu Core v.$var[mirror_version]]&command=$url[encode;$var[prefix]]&replyMessage=$var[cache.autoupdate1]&language=3]
+   $if[$httpStatus==200]
+    $channelSendMessage[$$dmChannelID[$botOwnerID];Hello, <@$authorID>, the command `Tsu Core` has been updated to the new version: v.$var[mirror_version]]! You can disable auto update by setting `core.auto_update` to false.]
+    $else
+     
+    $channelSendMessage[$$dmChannelID[$botOwnerID];Hello, <@$authorID>, i tried to update to the newest version (v.$var[mirror_version]) but sadly something went wrong. Is recommended that you copy the new version of the Tsu Core [here.](https://raw.githubusercontent.com/tsukum0/Tsu-Core/refs/heads/main/your-command-id.bds)]
+   $endif
    $else
     $if[$var[core.notify_update]==true]
      $channelSendMessage[$dmChannelID[$botOwnerID];<@$authorID>, New update `$var[mirror_version]` avaible! You can auto update by enabling `core.auto_update` or desable notification in `core.notify_update`.]
