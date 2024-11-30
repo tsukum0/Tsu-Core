@@ -20,7 +20,7 @@ $c[- Notes:
  This command was created to help developing your bot in BDFD, with a lot of commands compacted in one.
 The indentation of this command is propositaly diferent, as it helped me (the developer) to code. (this
 Means that you don't need to copy this indentation as it ins't needed when creating you code.)
-]$var[version;1]
+]$var[version;2]
 
 $c[! Message Lower (Life quality)]
  $var[msg.count;1]
