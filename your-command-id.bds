@@ -81,7 +81,7 @@ $c[! Command: Edit Command]
 $if[$var[1]==edit_command]
  $if[$var[2]==]
   $reply
-<`commandID`(req.)> <`Name`(opt.)> <`Trigger`(opt.)> <`Language`(opt\; if blank, ID 3, or, BDscript2 will be used.)> <`replyMessage`...(opt. <if blank, %{DOL}%nomention will be automatically inserted! `use %{DOL}%c to bypass.`)>
+<`commandID`(req.)> <`Name`(opt.)> <`Trigger`(opt.)> <`Language`(opt\; if blank, ID 3, or, BDscript2 will be used.)> <`replyMessage`...(opt. <if blank, nomention will be automatically inserted! `use c to bypass.`)>
 >>> **Use `%` as space or blank arguments!**, Ex.: `A%Phrase%with%a%lot%of%words!`
 Ex.²: `$var[bot.prefix]$var[1] 123456789 % +cool %`
   $else
