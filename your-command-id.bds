@@ -5,18 +5,22 @@ $c[+
 ]
 
 $c[- Configuration]
-$var[prefix;^]$c[Only visual, can be empty]
-$var[root.name;Root]$c[Profile]
-$var[command.eval;false]$c[Enable eval command? (default = false)]
-$var[notify.update;true]$c[Notify when a new update is avaible? (default = true)]
-$var[appearence;terminal]$c[Not a thing rn]
-$var[language;$c[Not a thing rn]]
+ $c[+ General]
+  $var[prefix;^] $c[Only visual, can be empty]
+  $var[root.name;Root] $c[Profile]
+  $var[core.notify_update;true] $c[Notify when a new update is avaible? (default = true)]
+  $var[core.auto_update;true] $c[Auto update? default = false]
+  $var[core.appearence;terminal] $c[Not a thing rn]
+  $var[core.language;] $c[Not a thing rn]
+ $c[! Commands]
+  $var[command.eval;false] $c[Enable eval command? (default = false)]
+
 
 $c[- Notes:
- This command was created to help developing your bot, with a lot of commands compacted in one.
+ This command was created to help developing your bot in BDFD, with a lot of commands compacted in one.
 The indentation of this command is propositaly diferent, as it helped me (the developer) to code. (this
 Means that you don't need to copy this indentation as it ins't needed when creating you code.)
-]
+]$var[version;1]
 
 $c[! Message Lower (Life quality)]
  $var[msg.count;1]
@@ -30,7 +34,6 @@ $c[! Runtime]$c[Functions always in use]
  $nomention
  $onlyForIDs[$botOwnerID; ]
  $onlyIf[$varExists[tsu.core]==true;Missing variable: tsu.core]
- $var[version;1]
  $c[tsu.core]
  $if[$getVar[tsu.core;$authorID]==]
   $var[tsu.core;$getVar[tsu.core]]
@@ -38,7 +41,30 @@ $c[! Runtime]$c[Functions always in use]
   $setVar[tsu.core;$var[tsu.core];$authorID]
   $var[tsu.core;]
  $endif
+ $c[Updates]
+ $httpGet[https://raw.githubusercontent.com/tsukum0/Tsu-Core/refs/heads/main/version]
+ $var[mirror_version;$httpResult]
+ $if[$var[mirror_version]>$var[version]]
+  $textSplit[$getVar[tsu.core;$authorID];¬]
+  $var[tsu.bdfd.botID;$splitText[2]]
+  $var[tsu.bdfd.core_commandid;$splitText[3]]
+  $textSplit[UwU;OwO]
+  $if[$var[core.auto_update]==true]
+   $httpGet[https://raw.githubusercontent.com/tsukum0/Tsu-Core/refs/heads/main/your-command-id.bds]
+   $var[cache.autoupdate1;$httpResult]
+   $httpAddHeader[Cookie;default-sessionStore=$var[tsu.bdfd.token]]
+   $httpAddHeader[Accept;text/html,application/xhtml+xml,application/xml\;q=0.9,*/*\;q=0.8]
+   $httpAddHeader[Priority;u=0, i]
+   $httpAddHeader[Content-Type;application/x-www-form-urlencoded]
+   $httpPost[https://botdesignerdiscord.com/app/bot/$var[tsu.bdfd.botID]/command/$var[tsu.bdfd.core_commandid];name=$url[encode;Tsu Core v.$var[mirror_version]]&command=$url[encode;$var[prefix]]&replyMessage=$var[cache.autoupdate1]&language=3]
+   $else
+    $if[$var[core.notify_update]==true]
+     $channelSendMessage[$dmChannelID[$botOwnerID];<@$authorID>, New update `$var[mirror_version]` avaible! You can auto update by enabling `core.auto_update` or desable notification in `core.notify_update`.]
+    $endif
+  $endif
+ $endif
 
+ 
 
 
 $c[! Eval]
