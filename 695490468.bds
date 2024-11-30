@@ -1,0 +1,95 @@
+$c[+
+/ _| /__\ | _ \  |_  |
+| _  |__| | _ /  | _|
+\__| \__/ |_|\_\ |___| |_|
+]
+
+$c[- Configuration]
+$var[prefix;^]$c[Only visual, can be empty]
+$var[root.name;Root]$c[Profile]
+$var[command.eval;false]$c[Enable eval command? (default = false)]
+$var[notify.update;true]$c[Notify when a new update is avaible? (default = true)]
+$var[appearence;terminal]$c[Not a thing rn]
+$var[language;$c[Not a thing rn]]
+
+$c[- Notes:
+ This command was created to help developing your bot, with a lot of commands compacted in one.
+The indentation of this command is propositaly diferent, as it helped me (the developer) to code. (this
+Means that you don't need to copy this indentation as it ins't needed when creating you code.)
+]
+
+$c[! Message Lower (Life quality)]
+ $var[msg.count;1]
+ $var[0;$toLowercase[$message]]
+ $var[$var[msg.count];$toLowercase[$message[$var[msg.count];$var[msg.count]]]]$var[msg.count;$sum[$var[msg.count];1]]
+ $var[$var[msg.count];$toLowercase[$message[$var[msg.count];$var[msg.count]]]]$var[msg.count;$sum[$var[msg.count];1]]
+ $var[$var[msg.count];$toLowercase[$message[$var[msg.count];$var[msg.count]]]]$var[msg.count;$sum[$var[msg.count];1]]
+ $var[$var[msg.count];$toLowercase[$message[$var[msg.count];$var[msg.count]]]]$var[msg.count;$sum[$var[msg.count];1]]
+
+$c[! Runtime]$c[Functions always in use]
+ $nomention
+ $onlyForIDs[$botOwnerID; ]
+ $onlyIf[$varExists[tsu.core]==true;Missing variable: tsu.core]
+ $var[version;1]
+ $c[tsu.core]
+ $if[$getVar[tsu.core;$authorID]==]
+  $var[tsu.core;$getVar[tsu.core]]
+  $setVar[tsu.core;]
+  $setVar[tsu.core;$var[tsu.core];$authorID]
+  $var[tsu.core;]
+ $endif
+
+
+
+$c[! Eval]
+$if[$and[$var[1]==eval;$var[command.eval]==true]==true]
+ $eval[$message]
+$endif
+
+$c[! Command: Edit Command]
+$if[$var[1]==edit_command]
+ $if[$var[2]==]
+  $reply
+<`commandID`(req.)> <`Name`(opt.)> <`Trigger`(opt.)> <`Language`(opt\; if blank, ID 3, or, BDscript2 will be used.)> <`replyMessage`...(opt. <if blank, %{DOL}%nomention will be automatically inserted! `use %{DOL}%c to bypass.`)>
+>>> **Use `%` as space or blank arguments!**, Ex.: `A%Phrase%with%a%lot%of%words!`
+Ex.²: `$var[bot.prefix]$var[1] 123456789 % +cool %`
+  $else
+   $textSplit[$getVar[tsu.core;$authorID];¬]
+   $c[- Auth and ID]
+    $var[tsu.bdfd.token;$splitText[1]]
+    $var[tsu.bdfd.botID;$splitText[2]]
+   $c[- Wrap message]
+    $var[msg.count;3]
+    $var[2;$message[2]]
+    $var[$var[msg.count];$replaceText[$message[$var[msg.count]];%; ;-1]] $var[msg.count;$sum[$var[msg.count];1]]
+    $var[$var[msg.count];$replaceText[$message[$var[msg.count]];%; ;-1]] $var[msg.count;$sum[$var[msg.count];1]]
+    $var[$var[msg.count];$replaceText[$message[$var[msg.count]];%; ;-1]] $var[msg.count;$sum[$var[msg.count];1]]
+    $var[$var[msg.count];$replaceText[$message;$message[1] $message[2] $message[3] $message[4] $message[5];;-1]]
+    $var[$var[msg.count];$replaceText[$var[$var[msg.count]];%; ;-1]]
+   $c[- Send HTTP request]
+   $httpAddHeader[Cookie;default-sessionStore=$var[tsu.bdfd.token]]
+   $httpAddHeader[Accept;text/html,application/xhtml+xml,application/xml\;q=0.9,*/*\;q=0.8]
+   $httpAddHeader[Priority;u=0, i]
+   $httpAddHeader[Content-Type;application/x-www-form-urlencoded]
+   $httpPost[https://botdesignerdiscord.com/app/bot/$var[tsu.bdfd.botID]/command/$url[encode;$var[2]];name=$url[encode;$var[3]]&command=$url[encode;$var[4]]&replyMessage=$var[6]&language=$var[5]]
+   $c[- Command reply]
+    $if[$httpStatus==200]
+     $reply
+Done!
+> Command_ID = `$var[2]`
+> Name = `$var[3]`
+> Trigger = `$var[4]`
+> Language = `$var[5]`
+`Connect pastebin API_DEV_KEY to store the replyMessage and the requested result. (IN DEV)`
+     $else
+      $reply
+Something went wrong... verify your message and try again!
+`($authorID) | Input: $var[prefix]$var[1] $var[2] $var[3] $var[4] $var[5] ...`
+   $endif 
+ $endif
+$endif
+
+$c[! Extra]
+$if[$var[1]==tsu]
+¬
+$endif
